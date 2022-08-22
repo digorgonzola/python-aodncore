@@ -1,0 +1,32 @@
+name: "pre-release"
+
+on: [push]
+
+jobs:
+  set_version:
+    name: "Set version"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: derive semver version
+        id: version
+        uses: paulhatch/semantic-version@v4.0.2
+        with:
+          tag_prefix: "v"
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          format: "${major}.${minor}.${patch}"
+#          namespace: my-service
+          bump_each_commit: false
+          search_commit_body: true
+          user_format_type: "csv"
+
+      - name: create the tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: v${{ steps.version.outputs.version }}
+          message: "Latest release"
