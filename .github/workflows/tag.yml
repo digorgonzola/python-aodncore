@@ -31,5 +31,5 @@ jobs:
       - name: create the tag
         uses: rickstaa/action-create-tag@v1
         with:
-          tag: v${{ steps.version.outputs.version }}
-          message: "Latest release"
+          tag: v${{ steps.version.outputs.version_tag }}
+          message: "version v${{ steps.version.outputs.version_tag }}"
